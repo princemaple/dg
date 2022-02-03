@@ -2,7 +2,7 @@
 
 <!-- DOC -->
 
-Elixir wrapper of `digraph` with a pinch of protocols
+Elixir wrapper of `:digraph` with a pinch of protocols
 
 ## Highlights
 
@@ -64,6 +64,12 @@ graph LR
 ```
 
 ![livebook screenshot](assets/livebook-screenshot-2.png)
+
+### Functions
+
+All functions from `:digraph` and `:digraph_utils` are mirrored under `DG`.
+Some functions have their parameters re-arranged so that the graph is always the parameter.
+(namely `reachable/2`, `reachable_neighbours/2`, `reaching/2` and `reaching_neighbours/2`)
 
 ## Installation
 

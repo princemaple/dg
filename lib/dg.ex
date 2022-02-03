@@ -1,7 +1,5 @@
 defmodule DG do
-  @moduledoc """
-  Elixir wrapper for `:digraph` from Erlang OTP
-  """
+  @moduledoc File.read!("README.md") |> String.split("<!-- DOC -->") |> List.last()
 
   defstruct dg: nil, opts: []
 
