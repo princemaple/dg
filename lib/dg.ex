@@ -1,4 +1,5 @@
 defmodule DG do
+  @external_resource "README.md"
   @moduledoc File.read!("README.md") |> String.split("<!-- DOC -->") |> List.last()
 
   defstruct dg: nil, opts: []
