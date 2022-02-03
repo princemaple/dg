@@ -1,0 +1,11 @@
+name: Publish Docs
+
+on: workflow_dispatch
+
+jobs:
+  publish:
+    uses: swoosh/actions/.github/workflows/publish.yml@main
+    with:
+      mode: 'docs'
+    secrets:
+      HEX_API_KEY: ${{ secrets.HEX_API_KEY }}

@@ -1,0 +1,14 @@
+name: Publish
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: swoosh/actions/.github/workflows/publish.yml@main
+    with:
+      mode: 'package'
+    secrets:
+      HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
