@@ -68,7 +68,7 @@ graph LR
 ### Functions
 
 All functions from `:digraph` and `:digraph_utils` are mirrored under `DG`.
-Some functions have their parameters re-arranged so that the graph is always the parameter.
+Some functions have their parameters re-arranged so that the graph is always the first parameter.
 (namely `reachable/2`, `reachable_neighbours/2`, `reaching/2` and `reaching_neighbours/2`)
 
 ## Installation
