@@ -1,6 +1,6 @@
-# Dg
+# DG
 
-**TODO: Add description**
+Elixir wrapper of `digraph` with a pinch of protocols
 
 ## Installation
 
