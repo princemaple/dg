@@ -1,4 +1,4 @@
-defmodule Dg.MixProject do
+defmodule DG.MixProject do
   use Mix.Project
 
   def project do

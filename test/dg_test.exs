@@ -1,8 +1,8 @@
-defmodule DgTest do
+defmodule DG.Test do
   use ExUnit.Case
-  doctest Dg
+  doctest DG
 
   test "greets the world" do
-    assert Dg.hello() == :world
+    assert DG.hello() == :world
   end
 end
