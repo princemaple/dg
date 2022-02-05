@@ -110,4 +110,27 @@ defmodule DG.Test do
       assert {_, "a", "b", "a -> b"} = DG.edge(dg, List.first(DG.edges(dg, "a")))
     end
   end
+
+  describe "sigil" do
+    import DG.Sigil
+
+    test "ingetration" do
+      dg = ~g"""
+      graph LR
+      a[aaaaa]
+        b[bb bb bb]
+        1-->          2
+        3[three] --   1 2 3    --> 4[four]
+        c        -->a
+      """
+
+      text = inspect(dg)
+
+      assert text =~ "graph LR"
+      assert text =~ "3[three]--1 2 3-->4[four]"
+      assert text =~ "1-->2"
+      assert text =~ "a[aaaaa]"
+      assert text =~ "b[bb bb bb]"
+    end
+  end
 end
