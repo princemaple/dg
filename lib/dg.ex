@@ -5,8 +5,16 @@ defmodule DG do
   defstruct dg: nil, opts: []
 
   def new(opts \\ []) do
-    {dg_opts, opts} = Keyword.pop(opts, :dg_opts, [])
-    %__MODULE__{dg: :digraph.new(opts), opts: dg_opts}
+    {digraph_opts, opts} = Keyword.pop(opts, :digraph_opts, [])
+    %__MODULE__{dg: :digraph.new(digraph_opts), opts: opts}
+  end
+
+  def new(vertices, opts) do
+    Enum.into(vertices, DG.new(opts))
+  end
+
+  def new(vertices, edges, opts) do
+    Enum.into(edges, new(vertices, opts))
   end
 
   def options(%__MODULE__{opts: opts}) do

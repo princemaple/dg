@@ -19,6 +19,7 @@ defmodule DG.MixProject do
 
   defp deps do
     [
+      {:abnf_parsec, "~> 1.2", runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
