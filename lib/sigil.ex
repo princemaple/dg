@@ -20,7 +20,7 @@ defmodule DG.Sigil do
     unwrap: ["type", "direction", "label"],
     transform: %{
       "vertex-id" => {:reduce, {List, :to_string, []}},
-      "label" => {:reduce, {List, :to_string, []}}
+      "label" => [{:reduce, {List, :to_string, []}}, {:map, {String, :trim, []}}]
     },
     debug: true
 
@@ -32,9 +32,12 @@ defmodule DG.Sigil do
     {:vertex, v, label}
   end
 
-  defp extract_vertex({:vertex, [v | _]}) do
-    v
-  end
+  defp extract_vertex({:vertex, [v | _]}), do: v
+  defp extract_vertex({:vertex, v, _label}), do: v
+  defp extract_vertex({:vertex, v}), do: v
+
+  defp extract_edge({:edge, v1, v2, _label}), do: {v1, v2}
+  defp extract_edge({:edge, v1, v2}), do: {v1, v2}
 
   defmacro sigil_g({:<<>>, _, [string]}, _opts) do
     {:ok, [graph: [{:type, _type}, {:direction, direction} | content]], _, _, _, _} =
@@ -52,6 +55,7 @@ defmodule DG.Sigil do
         {:edge, [v1, "--", _label, "-->", v2]} ->
           [unwrap_vertex(v1), unwrap_vertex(v2)]
       end)
+      |> Enum.uniq_by(&extract_vertex/1)
       |> Macro.escape()
 
     edges =
@@ -67,6 +71,7 @@ defmodule DG.Sigil do
         {:edge, [v1, "--", {:label, label}, "-->", v2]} ->
           {:edge, extract_vertex(v1), extract_vertex(v2), label}
       end)
+      |> Enum.uniq_by(&extract_edge/1)
       |> Macro.escape()
 
     quote do
