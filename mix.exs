@@ -12,7 +12,11 @@ defmodule DG.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       docs: docs(),
-      package: package()
+      package: package(),
+      preferred_cli_env: [
+        docs: :docs,
+        "hex.publish": :docs
+      ]
     ]
   end
 
@@ -23,7 +27,7 @@ defmodule DG.MixProject do
   defp deps do
     [
       {:abnf_parsec, "~> 1.2", runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+      {:ex_doc, ">= 0.0.0", only: :docs}
     ]
   end
 
