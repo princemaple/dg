@@ -1,4 +1,24 @@
 defmodule DG.Sigil do
+  @moduledoc """
+  Sigils that parse `mermaid.js` format flowchart into `DG`
+
+      iex> import DG.Sigil
+      ...> dg = ~G"\""
+      ...> graph LR
+      ...>   a[some label]
+      ...>   b[other label]
+      ...>   1-->2
+      ...>   3[three] -- three to four --> 4[four]
+      ...>   a --> b
+      ...> "\""
+      iex> DG.vertex(dg, "a")
+      {"a", "some label"}
+      iex> Enum.sort(DG.vertices(dg))
+      ["1", "2", "3", "4", "a", "b"]
+      iex> length(DG.edges(dg))
+      3
+  """
+
   use AbnfParsec,
     abnf: """
     wsp = %x20 / %x09
@@ -21,8 +41,7 @@ defmodule DG.Sigil do
     transform: %{
       "vertex-id" => {:reduce, {List, :to_string, []}},
       "label" => [{:reduce, {List, :to_string, []}}, {:map, {String, :trim, []}}]
-    },
-    debug: true
+    }
 
   defp unwrap_vertex({:vertex, [v]}) do
     {:vertex, v}
@@ -39,7 +58,7 @@ defmodule DG.Sigil do
   defp extract_edge({:edge, v1, v2, _label}), do: {v1, v2}
   defp extract_edge({:edge, v1, v2}), do: {v1, v2}
 
-  defmacro sigil_g({:<<>>, _, [string]}, _opts) do
+  defp gen(string) do
     {:ok, [graph: [{:type, _type}, {:direction, direction} | content]], _, _, _, _} =
       parse(string)
 
@@ -78,4 +97,7 @@ defmodule DG.Sigil do
       DG.new(unquote(vertices), unquote(edges), direction: unquote(direction))
     end
   end
+
+  defmacro sigil_g({:<<>>, _, [string]}, _opts), do: gen(string)
+  defmacro sigil_G({:<<>>, _, [string]}, _opts), do: gen(string)
 end

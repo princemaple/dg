@@ -2,7 +2,20 @@
 
 <!-- DOC -->
 
-Elixir wrapper of `:digraph` with a pinch of protocols
+Elixir wrapper of `:digraph` with a pinch of protocols and sigils
+
+## Installation
+
+The package can be installed by adding `dg` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:dg, "~> 0.1"},
+    ...
+  ]
+end
+```
 
 ## Highlights
 
@@ -67,23 +80,31 @@ graph LR
 
 ### Functions
 
-All functions from `:digraph` and `:digraph_utils` are mirrored under `DG`.
-Some functions have their parameters re-arranged so that the graph is always the first parameter.
-(namely `reachable/2`, `reachable_neighbours/2`, `reaching/2` and `reaching_neighbours/2`)
+- Most functions from `:digraph` and `:digraph_utils` are mirrored under `DG`.
+- Some functions have their parameters re-arranged so that the graph is always the first parameter.
+  (namely `reachable/2`, `reachable_neighbours/2`, `reaching/2` and `reaching_neighbours/2`)
+- `new/{0,1,2,3}` returns `%DG{}` instead of an Erlang `digraph`
+- `new/2` and `new/3` are shortcuts that can add vertices and edges on creation,
+  which don't exist on `:digraph`
 
-## Installation
+### Sigils
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `dg` to your list of dependencies in `mix.exs`:
+`~G` and `~g` are provided so you can copy `mermaid.js` flowchart and paste into Elixir to get a `%DG{}`
 
 ```elixir
-def deps do
-  [
-    {:dg, "~> 0.1.0"}
-  ]
-end
+import DG.Sigil
+
+dg = ~G"""
+graph LR
+  a[some label]
+  b[other label]
+  1-->2
+  3[three] -- three to four --> 4[four]
+  a --> b
+"""
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/dg>.
+**caveat:** `:digraph` is stateful (using `ets`), don't use the sigil at compile time,
+e.g. as a module attribute, it won't carry over to runtime.
+Only use it in runtime code, e.g. function body,
+and remember to clean up properly when it's no longer used, with `delete/1`.

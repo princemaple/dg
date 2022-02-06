@@ -1,6 +1,7 @@
 defmodule DG.Test do
   use ExUnit.Case
   doctest DG
+  doctest DG.Sigil
 
   setup do
     {:ok, dg: DG.new()}
