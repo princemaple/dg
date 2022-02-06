@@ -46,6 +46,7 @@ defmodule DG.MixProject do
         LICENSE: [title: "License"],
         "README.md": [title: "Overview"]
       ],
+      assets: "assets",
       main: "readme",
       canonical: "http://hexdocs.pm/dg",
       homepage_url: @source_url,
