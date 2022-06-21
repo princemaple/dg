@@ -113,7 +113,7 @@ defmodule DG.Test do
   end
 
   describe "sigil" do
-    import DG.Sigil, only: :sigils
+    import DG.Sigil
 
     test "ingetration" do
       dg = ~g"""
