@@ -98,6 +98,42 @@ defmodule DG.Sigil do
     end
   end
 
+  def gen2(string) do
+    {:ok, [graph: [{:type, _type}, {:direction, direction} | content]], _, _, _, _} =
+      parse(string)
+
+    vertices =
+      content
+      |> Enum.flat_map(fn
+        {:vertex, _} = v ->
+          [unwrap_vertex(v)]
+
+        {:edge, [v1, "-->", v2]} ->
+          [unwrap_vertex(v1), unwrap_vertex(v2)]
+
+        {:edge, [v1, "--", _label, "-->", v2]} ->
+          [unwrap_vertex(v1), unwrap_vertex(v2)]
+      end)
+      |> Enum.uniq_by(&extract_vertex/1)
+
+    edges =
+      content
+      |> Enum.filter(fn
+        {:edge, _} -> true
+        _ -> false
+      end)
+      |> Enum.map(fn
+        {:edge, [v1, "-->", v2]} ->
+          {:edge, extract_vertex(v1), extract_vertex(v2)}
+
+        {:edge, [v1, "--", {:label, label}, "-->", v2]} ->
+          {:edge, extract_vertex(v1), extract_vertex(v2), label}
+      end)
+      |> Enum.uniq_by(&extract_edge/1)
+
+    DG.new(vertices, edges, direction: direction)
+  end
+
   defmacro sigil_g({:<<>>, _, [string]}, _opts), do: gen(string)
   defmacro sigil_G({:<<>>, _, [string]}, _opts), do: gen(string)
 end
