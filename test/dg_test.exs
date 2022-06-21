@@ -113,7 +113,7 @@ defmodule DG.Test do
   end
 
   describe "sigil" do
-    import DG.Sigil
+    import DG.Sigil, only: :sigils
 
     test "ingetration" do
       dg = ~g"""
@@ -132,6 +132,18 @@ defmodule DG.Test do
       assert text =~ "1-->2"
       assert text =~ "a[aaaaa]"
       assert text =~ "b[bb bb bb]"
+    end
+
+    test "interpolation" do
+      label = "1 2 3"
+
+      dg = ~g"""
+      graph LR
+        a -- #{label} --> b
+      """
+
+      text = inspect(dg)
+      assert text =~ "a--1 2 3-->b"
     end
   end
 end

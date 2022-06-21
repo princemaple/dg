@@ -58,7 +58,8 @@ defmodule DG.Sigil do
   defp extract_edge({:edge, v1, v2, _label}), do: {v1, v2}
   defp extract_edge({:edge, v1, v2}), do: {v1, v2}
 
-  defp gen(string) do
+  @doc false
+  def prepare_gen(string) do
     {:ok, [graph: [{:type, _type}, {:direction, direction} | content]], _, _, _, _} =
       parse(string)
 
@@ -75,7 +76,6 @@ defmodule DG.Sigil do
           [unwrap_vertex(v1), unwrap_vertex(v2)]
       end)
       |> Enum.uniq_by(&extract_vertex/1)
-      |> Macro.escape()
 
     edges =
       content
@@ -91,13 +91,31 @@ defmodule DG.Sigil do
           {:edge, extract_vertex(v1), extract_vertex(v2), label}
       end)
       |> Enum.uniq_by(&extract_edge/1)
-      |> Macro.escape()
+
+    {direction, vertices, edges}
+  end
+
+  defp gen(string) do
+    {direction, vertices, edges} = prepare_gen(string)
 
     quote do
-      DG.new(unquote(vertices), unquote(edges), direction: unquote(direction))
+      DG.new(
+        unquote(Macro.escape(vertices)),
+        unquote(Macro.escape(edges)),
+        direction: unquote(direction)
+      )
     end
   end
 
   defmacro sigil_g({:<<>>, _, [string]}, _opts), do: gen(string)
+
+  defmacro sigil_g({:<<>>, _, _pieces} = string, _opts) do
+    quote do
+      import unquote(__MODULE__), only: [prepare_gen: 1]
+      {direction, vertices, edges} = prepare_gen(unquote(string))
+      DG.new(vertices, edges, direction: direction)
+    end
+  end
+
   defmacro sigil_G({:<<>>, _, [string]}, _opts), do: gen(string)
 end

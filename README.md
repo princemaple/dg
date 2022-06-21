@@ -104,6 +104,16 @@ graph LR
 """
 ```
 
+```elixir
+# With interpolation
+
+label = "1 2 3"
+dg = ~g"""
+graph LR
+  a --#{label}--> b
+"""
+```
+
 **caveat:** `:digraph` is stateful (using `ets`), don't use the sigil at compile time,
 e.g. as a module attribute, it won't carry over to runtime.
 Only use it in runtime code, e.g. function body,
