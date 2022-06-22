@@ -11,7 +11,7 @@ The package can be installed by adding `dg` to your list of dependencies in `mix
 ```elixir
 def deps do
   [
-    {:dg, "~> 0.1"},
+    {:dg, "~> 0.2"},
     ...
   ]
 end
