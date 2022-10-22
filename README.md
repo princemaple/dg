@@ -42,7 +42,11 @@ graph LR
 
 which can be put into livebook `mermaid` block and will display as
 
-![livebook screenshot](assets/livebook-screenshot-1.png)
+```mermaid
+graph LR
+    v1-->v2[label 2]
+    v1--1 to 3-->v3
+```
 
 ### Collectable
 
@@ -68,15 +72,13 @@ IO.inspect(dg)
 
 outputs
 
-```
+```mermaid
 graph LR
     b-->c
     c-->d
     a-->b
     d-->e
 ```
-
-![livebook screenshot](assets/livebook-screenshot-2.png)
 
 ### Functions
 
