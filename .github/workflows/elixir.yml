@@ -43,5 +43,8 @@ jobs:
       - name: Install Dependencies
         run: mix deps.get
 
+      - run: mix format --check-formatted
+        if: matrix.lint
+
       - name: Run Tests
         run: mix test
