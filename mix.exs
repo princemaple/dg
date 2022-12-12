@@ -27,6 +27,7 @@ defmodule DG.MixProject do
   defp deps do
     [
       {:abnf_parsec, "~> 1.2", runtime: false},
+      {:libgraph, ">= 0.0.0", optional: true},
       {:ex_doc, ">= 0.0.0", only: :docs}
     ]
   end

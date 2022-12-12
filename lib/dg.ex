@@ -216,4 +216,26 @@ defmodule DG do
   def topsort(%__MODULE__{dg: dg}) do
     :digraph_utils.topsort(dg)
   end
+
+  if Code.ensure_loaded?(Graph) do
+    def from({:libgraph, graph}) do
+      dg = DG.new()
+
+      graph
+      |> Graph.vertices()
+      |> Enum.map(&{:vertex, &1})
+      |> Enum.into(dg)
+
+      graph
+      |> Graph.edges()
+      |> Enum.map(fn
+        %Graph.Edge{label: nil} = e ->
+          {:edge, e.v1, e.v2}
+
+        %Graph.Edge{} = e ->
+          {:edge, e.v1, e.v2, e.label}
+      end)
+      |> Enum.into(dg)
+    end
+  end
 end
