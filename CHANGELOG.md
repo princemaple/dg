@@ -1,3 +1,7 @@
+## v0.3.0
+
+Add loading from `:libgraph` `Graph`.
+
 ## v0.2.0
 
 Add interpolation support.

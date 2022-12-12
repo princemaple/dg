@@ -11,7 +11,7 @@ The package can be installed by adding `dg` to your list of dependencies in `mix
 ```elixir
 def deps do
   [
-    {:dg, "~> 0.2"},
+    {:dg, "~> 0.3"},
     ...
   ]
 end
@@ -120,3 +120,10 @@ graph LR
 e.g. as a module attribute, it won't carry over to runtime.
 Only use it in runtime code, e.g. function body,
 and remember to clean up properly when it's no longer used, with `delete/1`.
+
+### Load from `libgraph`
+
+```elixir
+dg = DG.new()
+DG.from({:libgraph, graph})
+```
