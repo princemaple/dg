@@ -2,13 +2,13 @@ defmodule DG.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/princemaple/dg"
-  @version "0.3.0"
+  @version "0.4.0"
 
   def project do
     [
       app: :dg,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       docs: docs(),

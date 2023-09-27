@@ -1,3 +1,7 @@
+## v0.4.0
+
+`subgraph` now returns a DG struct, thanks @jdewar ! (#25)
+
 ## v0.3.0
 
 Add loading from `:libgraph` `Graph`.
