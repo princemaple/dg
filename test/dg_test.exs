@@ -136,7 +136,7 @@ defmodule DG.Test do
   describe "sigil" do
     import DG.Sigil
 
-    test "ingetration" do
+    test "integration" do
       dg = ~g"""
       graph LR
       a[aaaaa]
