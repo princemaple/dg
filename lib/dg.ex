@@ -205,12 +205,10 @@ defmodule DG do
     :digraph_utils.strong_components(dg)
   end
 
-  def subgraph(%__MODULE__{dg: dg}, vertices) do
-    :digraph_utils.subgraph(dg, vertices)
-  end
-
-  def subgraph(%__MODULE__{dg: dg}, vertices, options) do
-    :digraph_utils.subgraph(dg, vertices, options)
+  def subgraph(%__MODULE__{dg: dg}, vertices, options \\ []) do
+    {digraph_opts, opts} = Keyword.pop(options, :digraph_opts, [])
+    subgraph = :digraph_utils.subgraph(dg, vertices, digraph_opts)
+    %__MODULE__{dg: subgraph, opts: opts}
   end
 
   def topsort(%__MODULE__{dg: dg}) do
