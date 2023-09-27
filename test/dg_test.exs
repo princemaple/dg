@@ -112,6 +112,27 @@ defmodule DG.Test do
     end
   end
 
+  describe "subgraph" do
+    test "returns a DG" do
+      dg = DG.new(test: true)
+      ~w(a b c d e) |> Enum.map(&{:vertex, &1}) |> Enum.into(dg)
+
+      assert %DG{} = DG.subgraph(dg, ~w(a b c))
+    end
+
+    test "handles digraph options" do
+      dg = DG.new(test: true)
+      ~w(a b c) |> Enum.map(&{:vertex, &1}) |> Enum.into(dg)
+
+      label = "a -> b"
+      Enum.into([{:edge, "a", "b", label}], dg)
+
+      subgraph = DG.subgraph(dg, ~w(a b), digraph_opts: [keep_labels: true])
+
+      assert {_, "a", "b", ^label} = DG.edge(subgraph, List.first(DG.edges(dg, "a")))
+    end
+  end
+
   describe "sigil" do
     import DG.Sigil
 
