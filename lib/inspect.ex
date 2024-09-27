@@ -21,7 +21,7 @@ defimpl Inspect, for: DG do
                 [inspect_node(dg, v), "-->", inspect_node(dg, n)]
 
               {_e, ^v, n, label} ->
-                [inspect_node(dg, v), "--", label, "-->", inspect_node(dg, n)]
+                [inspect_node(dg, v), "--", inspect_term(label), "-->", inspect_node(dg, n)]
             end)
             |> Enum.intersperse([line()])
         end
@@ -49,8 +49,11 @@ defimpl Inspect, for: DG do
   defp label(dg, v, prefix) do
     case :digraph.vertex(dg, v) do
       {^v, []} -> [prefix]
-      {^v, l} -> [prefix, "[", l, "]"]
+      {^v, l} -> [prefix, "[", inspect_term(l), "]"]
     end
     |> concat
   end
+
+  defp inspect_term(term) when is_binary(term), do: term
+  defp inspect_term(term), do: inspect(term)
 end

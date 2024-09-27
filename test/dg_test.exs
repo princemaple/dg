@@ -74,6 +74,18 @@ defmodule DG.Test do
                    1--one to two-->2[two]
                """)
     end
+
+    test "fancy labels", %{dg: dg} do
+      DG.add_vertex(dg, 1)
+      DG.add_vertex(dg, 2, :c.pid(0, 42, 42))
+      DG.add_edge(dg, 1, 2, :"one to two")
+
+      assert inspect(dg) ==
+               String.trim("""
+               graph LR
+                   1--:\"one to two\"-->2[#PID<0.42.42>]
+               """)
+    end
   end
 
   describe "collectable" do
