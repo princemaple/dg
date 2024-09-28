@@ -1,3 +1,7 @@
+## v0.4.1
+
+Support non string labels, thanks @martosaur (#39) 
+
 ## v0.4.0
 
 `subgraph` now returns a DG struct, thanks @jdewar ! (#25)
