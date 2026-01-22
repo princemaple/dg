@@ -22,7 +22,13 @@ defimpl Inspect, for: DG do
                   concat([inspect_node(dg, v), "-->", inspect_node(dg, n)])
 
                 _ ->
-                  concat([inspect_node(dg, v), "--", inspect_term(label), "-->", inspect_node(dg, n)])
+                  concat([
+                    inspect_node(dg, v),
+                    "--",
+                    inspect_term(label),
+                    "-->",
+                    inspect_node(dg, n)
+                  ])
               end
             end)
         end
