@@ -6,9 +6,9 @@ defimpl Inspect, for: DG do
 
     direction = Keyword.get(opts, :direction, "LR")
 
-    content =
+    edges =
       vertices
-      |> Enum.map(fn v ->
+      |> Enum.flat_map(fn v ->
         case {:digraph.out_edges(dg, v), :digraph.in_edges(dg, v)} do
           {[], []} ->
             [inspect_node(dg, v)]
@@ -18,17 +18,17 @@ defimpl Inspect, for: DG do
             |> Enum.map(&:digraph.edge(dg, &1))
             |> Enum.map(fn
               {_e, ^v, n, []} ->
-                [inspect_node(dg, v), "-->", inspect_node(dg, n)]
+                concat([inspect_node(dg, v), "-->", inspect_node(dg, n)])
 
               {_e, ^v, n, label} ->
-                [inspect_node(dg, v), "--", inspect_term(label), "-->", inspect_node(dg, n)]
+                concat([inspect_node(dg, v), "--", inspect_term(label), "-->", inspect_node(dg, n)])
             end)
-            |> Enum.intersperse([line()])
         end
       end)
-      |> Enum.reject(&match?([], &1))
-      |> Enum.intersperse([line()])
-      |> List.flatten()
+
+    content =
+      edges
+      |> Enum.intersperse(line())
       |> concat()
 
     concat([
