@@ -14,14 +14,16 @@ defimpl Inspect, for: DG do
             [inspect_node(dg, v)]
 
           {out_edges, _} ->
-            out_edges
-            |> Enum.map(&:digraph.edge(dg, &1))
-            |> Enum.map(fn
-              {_e, ^v, n, []} ->
-                concat([inspect_node(dg, v), "-->", inspect_node(dg, n)])
+            Enum.map(out_edges, fn e ->
+              {_e, ^v, n, label} = :digraph.edge(dg, e)
 
-              {_e, ^v, n, label} ->
-                concat([inspect_node(dg, v), "--", inspect_term(label), "-->", inspect_node(dg, n)])
+              case label do
+                [] ->
+                  concat([inspect_node(dg, v), "-->", inspect_node(dg, n)])
+
+                _ ->
+                  concat([inspect_node(dg, v), "--", inspect_term(label), "-->", inspect_node(dg, n)])
+              end
             end)
         end
       end)
